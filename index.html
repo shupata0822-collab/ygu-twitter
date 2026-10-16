@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>YGU Twitter（山梨学院大学非公式）</title>
+<style>
+
+        body {
+
+            font-family: sans-serif;
+
+            background-color: #f0f2f5;
+
+            margin: 0;
+
+            padding: 20px;
+
+            display: flex;
+
+            justify-content: center;
+
+        }
+
+        .container {
+
+            width: 100%;
+
+            max-width: 600px;
+
+            background: white;
+
+            padding: 20px;
+
+            border-radius: 10px;
+
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+
+            position: relative;
+
+        }
+
+        .admin-btn {
+
+            position: absolute;
+
+            top: 20px;
+
+            right: 20px;
+
+            background-color: #6c757d;
+
+            color: white;
+
+            border: none;
+
+            padding: 5px 10px;
+
+            font-size: 12px;
+
+            border-radius: 3px;
+
+            cursor: pointer;
+
+        }
+
+        h1 {
+
+            color: #002b5c;
+
+            font-size: 24px;
+
+            text-align: center;
+
+            margin-bottom: 10px;
+
+        }
+
+        .tabs {
+
+            display: flex;
+
+            border-bottom: 2px solid #eee;
+
+            margin-bottom: 15px;
+
+        }
+
+        .tab {
+
+            flex: 1;
+
+            text-align: center;
+
+            padding: 10px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            color: #666;
+
+        }
+
+        .tab.active {
+
+            color: #002b5c;
+
+            border-bottom: 3px solid #002b5c;
+
+            margin-bottom: -2px;
+
+        }
+
+        .input-group {
+
+            margin-bottom: 10px;
+
+        }
+
+        .input-group label {
+
+            font-size: 13px;
+
+            color: #555;
+
+            display: block;
+
+            margin-bottom: 3px;
+
+        }
+
+        input[type="text"] {
+
+            width: 100%;
+
+            padding: 8px;
+
+            box-sizing: border-box;
+
+            border: 1px solid #ccc;
+
+            border-radius: 5px;
+
+            font-size: 14px;
+
+        }
+
+        textarea {
+
+            width: 100%;
+
+            height: 70px;
+
+            padding: 10px;
+
+            box-sizing: border-box;
+
+            border: 1px solid #ccc;
+
+            border-radius: 5px;
+
+            resize: none;
+
+            font-size: 16px;
+
+        }
+
+        .file-input-wrapper {
+
+            margin-top: 8px;
+
+            font-size: 13px;
+
+            color: #555;
+
+        }
+
+        button.post-btn {
+
+            background-color: #002b5c;
+
+            color: white;
+
+            border: none;
+
+            padding: 10px 20px;
+
+            font-size: 16px;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+
+            float: right;
+
+            margin-top: 10px;
+
+        }
+
+        button.post-btn:hover {
+
+            background-color: #001a38;
+
+        }
+
+        .clear {
+
+            clear: both;
+
+        }
+
+        .tweet {
+
+            border-bottom: 1px solid #eee;
+
+            padding: 15px 0;
+
+            display: flex;
+
+            align-items: flex-start;
+
+        }
+
+        .tweet-avatar {
+
+            width: 45px;
+
+            height: 45px;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            background-color: #002b5c;
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-weight: bold;
+
+            font-size: 18px;
+
+            margin-right: 12px;
+
+            flex-shrink: 0;
+
+        }
+
+        .tweet-content {
+
+            flex-grow: 1;
+
+            word-break: break-all;
+
+        }
+
+        .tweet-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 3px;
+
+        }
+
+        .user-info-area {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+        }
+
+        .tweet-user {
+
+            font-weight: bold;
+
+            color: #333;
+
+        }
+
+        .follow-btn {
+
+            background-color: #fff;
+
+            color: #002b5c;
+
+            border: 1px solid #002b5c;
+
+            padding: 2px 8px;
+
+            font-size: 11px;
+
+            border-radius: 12px;
+
+            cursor: pointer;
+
+        }
+
+        .follow-btn.following {
+
+            background-color: #002b5c;
+
+            color: white;
+
+        }
+
+        .tweet-time {
+
+            font-size: 12px;
+
+            color: #888;
+
+        }
+
+        .tweet-text {
+
+            color: #111;
+
+            white-space: pre-wrap;
+
+            margin-bottom: 8px;
+
+        }
+
+        .tweet-image {
+
+            max-width: 100%;
+
+            max-height: 250px;
+
+            border-radius: 5px;
+
+            margin-top: 5px;
+
+            display: block;
+
+        }
+
+        .tweet-actions {
+
+            margin-top: 8px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+        }
+
+        .like-btn {
+
+            background: none;
+
+            border: none;
+
+            cursor: pointer;
+
+            font-size: 14px;
+
+            color: #666;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 4px;
+
+        }
+
+        .like-btn:hover {
+
+            color: #e0245e;
+
+        }
+
+        .like-btn.liked {
+
+            color: #e0245e;
+
+        }
+
+        .delete-btn {
+
+            background-color: #dc3545;
+
+            color: white;
+
+            border: none;
+
+            padding: 5px 10px;
+
+            font-size: 12px;
+
+            border-radius: 3px;
+
+            cursor: pointer;
+
+            display: none;
+
+            margin-left: 10px;
+
+            align-self: center;
+
+        }
+
+        .admin-mode .delete-btn {
+
+            display: inline-block;
+
+        }
+</style>
+</head>
+<body>
+<div class="container" id="mainContainer">
+<button class="admin-btn" onclick="toggleAdmin()">管理者ログイン</button>
+<h1>💙 YGU Twitter 🦅</h1>
+<!-- 投稿エリア -->
+<div style="margin-bottom: 20px;">
+<div class="input-group">
+<label>アカウント名</label>
+<input type="text" id="userInput" placeholder="例：山梨 太郎">
+</div>
+<textarea id="tweetInput" placeholder="いまどうしてる？（山梨学院での出来事など）"></textarea>
+<div class="file-input-wrapper">
+
+                👤 プロフィール画像 (任意): <input type="file" id="avatarInput" accept="image/*">
+</div>
+<div class="file-input-wrapper">
+
+                📷 添付の写真 (任意): <input type="file" id="imageInput" accept="image/*">
+</div>
+<button class="post-btn" onclick="postTweet()">つぶやく</button>
+<div class="clear"></div>
+</div>
+<!-- タイムラインの切り替えタブ -->
+<div class="tabs">
+<div class="tab active" id="tabAll" onclick="switchTab('all')">すべて</div>
+<div class="tab" id="tabFollowing" onclick="switchTab('following')">フォロー中</div>
+</div>
+<!-- タイムライン（投稿一覧） -->
+<div id="timeline"></div>
+</div>
+<script>
+
+        let isAdmin = false;
+
+        let currentTab = 'all';
+
+        window.onload = function() {
+
+            loadTweets();
+
+        };
+
+        function switchTab(tab) {
+
+            currentTab = tab;
+
+            if (tab === 'all') {
+
+                document.getElementById('tabAll').classList.add('active');
+
+                document.getElementById('tabFollowing').classList.remove('active');
+
+            } else {
+
+                document.getElementById('tabFollowing').classList.add('active');
+
+                document.getElementById('tabAll').classList.remove('active');
+
+            }
+
+            loadTweets();
+
+        }
+
+        function toggleAdmin() {
+
+            if (!isAdmin) {
+
+                const password = prompt("管理者パスワードを入力してください:");
+
+                if (password === "ygu2026") {
+
+                    isAdmin = true;
+
+                    document.getElementById('mainContainer').classList.add('admin-mode');
+
+                    alert("管理者としてログインしました。");
+
+                    loadTweets();
+
+                } else if (password !== null) {
+
+                    alert("パスワードが違います。");
+
+                }
+
+            } else {
+
+                isAdmin = false;
+
+                document.getElementById('mainContainer').classList.remove('admin-mode');
+
+                alert("管理者モードをログアウトしました。");
+
+                loadTweets();
+
+            }
+
+        }
+
+        function postTweet() {
+
+            const userInput = document.getElementById('userInput');
+
+            const tweetInput = document.getElementById('tweetInput');
+
+            const avatarInput = document.getElementById('avatarInput');
+
+            const imageInput = document.getElementById('imageInput');
+
+            const username = userInput.value.trim() || "名無しさん";
+
+            const text = tweetInput.value.trim();
+
+            if (text === "" && imageInput.files.length === 0) {
+
+                alert("文字か添付写真を入力してください！");
+
+                return;
+
+            }
+
+            const now = new Date();
+
+            const timeString = now.getFullYear() + "/" + 
+
+                               (now.getMonth() + 1) + "/" + 
+
+                               now.getDate() + " " + 
+
+                               now.getHours().toString().padStart(2, '0') + ":" + 
+
+                               now.getMinutes().toString().padStart(2, '0');
+
+            let avatarFile = avatarInput.files.length > 0 ? avatarInput.files[0] : null;
+
+            let tweetFile = imageInput.files.length > 0 ? imageInput.files[0] : null;
+
+            processImagesAndSave(username, text, timeString, avatarFile, tweetFile);
+
+        }
+
+        function processImagesAndSave(username, text, timeString, avatarFile, tweetFile) {
+
+            let avatarData = null;
+
+            let tweetImageData = null;
+
+            let pendingCount = (avatarFile ? 1 : 0) + (tweetFile ? 1 : 0);
+
+            if (pendingCount === 0) {
+
+                saveToLocalStorage(username, text, timeString, null, null);
+
+                return;
+
+            }
+
+            if (avatarFile) {
+
+                const readerAvatar = new FileReader();
+
+                readerAvatar.onload = function(e) {
+
+                    avatarData = e.target.result;
+
+                    checkDone();
+
+                };
+
+                readerAvatar.readAsDataURL(avatarFile);
+
+            }
+
+            if (tweetFile) {
+
+                const readerTweet = new FileReader();
+
+                readerTweet.onload = function(e) {
+
+                    tweetImageData = e.target.result;
+
+                    checkDone();
+
+                };
+
+                readerTweet.readAsDataURL(tweetFile);
+
+            }
+
+            function checkDone() {
+
+                pendingCount--;
+
+                if (pendingCount === 0) {
+
+                    saveToLocalStorage(username, text, timeString, avatarData, tweetImageData);
+
+                }
+
+            }
+
+        }
+
+        function saveToLocalStorage(username, text, timeString, avatarData, tweetImageData) {
+
+            const newTweet = {
+
+                id: Date.now(),
+
+                user: username,
+
+                text: text,
+
+                time: timeString,
+
+                avatar: avatarData,
+
+                image: tweetImageData,
+
+                likes: 0,
+
+                likedByMe: false
+
+            };
+
+            let tweets = JSON.parse(localStorage.getItem('ygu_tweets')) || [];
+
+            tweets.unshift(newTweet);
+
+            localStorage.setItem('ygu_tweets', JSON.stringify(tweets));
+
+            // 入力欄をクリア
+
+            document.getElementById('tweetInput').value = "";
+
+            document.getElementById('avatarInput').value = "";
+
+            document.getElementById('imageInput').value = "";
+
+            loadTweets();
+
+        }
+
+        function toggleLike(id) {
+
+            let tweets = JSON.parse(localStorage.getItem('ygu_tweets')) || [];
+
+            const tweet = tweets.find(t => t.id === id);
+
+            if (tweet) {
+
+                if (tweet.likedByMe) {
+
+                    tweet.likes--;
+
+                    tweet.likedByMe = false;
+
+                } else {
+
+                    tweet.likes++;
+
+                    tweet.likedByMe = true;
+
+                }
+
+                localStorage.setItem('ygu_tweets', JSON.stringify(tweets));
+
+                loadTweets();
+
+            }
+
+        }
+
+        function toggleFollow(username) {
+
+            let following = JSON.parse(localStorage.getItem('ygu_following')) || [];
+
+            const index = following.indexOf(username);
+
+            if (index > -1) {
+
+                following.splice(index, 1);
+
+            } else {
+
+                following.push(username);
+
+            }
+
+            localStorage.setItem('ygu_following', JSON.stringify(following));
+
+            loadTweets();
+
+        }
+
+        function deleteTweet(indexInAll) {
+
+            if (!isAdmin) return;
+
+            if (confirm("この投稿を削除しますか？")) {
+
+                let tweets = JSON.parse(localStorage.getItem('ygu_tweets')) || [];
+
+                tweets.splice(indexInAll, 1);
+
+                localStorage.setItem('ygu_tweets', JSON.stringify(tweets));
+
+                loadTweets();
+
+            }
+
+        }
+
+        function loadTweets() {
+
+            const timeline = document.getElementById('timeline');
+
+            timeline.innerHTML = "";
+
+            let tweets = JSON.parse(localStorage.getItem('ygu_tweets')) || [];
+
+            let following = JSON.parse(localStorage.getItem('ygu_following')) || [];
+
+            let displayTweets = tweets;
+
+            if (currentTab === 'following') {
+
+                displayTweets = tweets.filter(t => following.includes(t.user));
+
+            }
+
+            if (displayTweets.length === 0) {
+
+                if (currentTab === 'following') {
+
+                    timeline.innerHTML = '<div style="text-align:center; color:#888; padding:20px;">まだ誰もフォローしていないか、フォロー中のユーザーの投稿がありません。</div>';
+
+                } else {
+
+                    timeline.innerHTML = `
+<div class="tweet">
+<div class="tweet-avatar">山</div>
+<div class="tweet-content">
+<div class="tweet-header">
+<div class="user-info-area">
+<span class="tweet-user">山梨学院生 1号</span>
+<button class="follow-btn" onclick="toggleFollow('山梨学院生 1号')">フォロー</button>
+</div>
+<span class="tweet-time">2026/10/09 12:00</span>
+</div>
+<div class="tweet-text">キャンパスのイチョウ並木がきれいです！ https://www.ygu.ac.jp</div>
+<div class="tweet-actions">
+<button class="like-btn">❤️ 3</button>
+</div>
+</div>
+</div>`;
+
+                }
+
+                return;
+
+            }
+
+            for (let i = 0; i < displayTweets.length; i++) {
+
+                const tweet = displayTweets[i];
+
+                const originalIndex = tweets.findIndex(t => t.id === tweet.id);
+
+                const tweetDiv = document.createElement('div');
+
+                tweetDiv.className = 'tweet';
+
+                let formattedText = escapeHTML(tweet.text);
+
+                const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+                formattedText = formattedText.replace(urlRegex, '<a href="$1" target="_blank">$1</a>');
+
+                // プロフィール画像（未選択の場合はアカウント名の最初の1文字をアイコンにする）
+
+                let avatarHtml = "";
+
+                if (tweet.avatar) {
+
+                    avatarHtml = `<img src="${tweet.avatar}" class="tweet-avatar">`;
+
+                } else {
+
+                    const firstChar = tweet.user ? tweet.user.charAt(0) : "名";
+
+                    avatarHtml = `<div class="tweet-avatar">${escapeHTML(firstChar)}</div>`;
+
+                }
+
+                let imageHtml = "";
+
+                if (tweet.image) {
+
+                    imageHtml = `<img src="${tweet.image}" class="tweet-image">`;
+
+                }
+
+                const isFollowing = following.includes(tweet.user);
+
+                const followBtnClass = isFollowing ? "follow-btn following" : "follow-btn";
+
+                const followBtnText = isFollowing ? "フォロー中" : "フォロー";
+
+                const likeBtnClass = tweet.likedByMe ? "like-btn liked" : "like-btn";
+
+                tweetDiv.innerHTML = `
+
+                    ${avatarHtml}
+<div class="tweet-content">
+<div class="tweet-header">
+<div class="user-info-area">
+<span class="tweet-user">${escapeHTML(tweet.user)}</span>
+<button class="${followBtnClass}" onclick="toggleFollow('${escapeHTML(tweet.user)}')">${followBtnText}</button>
+</div>
+<span class="tweet-time">${escapeHTML(tweet.time)}</span>
+</div>
+<div class="tweet-text">${formattedText}</div>
+
+                        ${imageHtml}
+<div class="tweet-actions">
+<button class="${likeBtnClass}" onclick="toggleLike(${tweet.id})">❤️ ${tweet.likes || 0}</button>
+</div>
+</div>
+<button class="delete-btn" onclick="deleteTweet(${originalIndex})">削除</button>
+
+                `;
+
+                timeline.appendChild(tweetDiv);
+
+            }
+
+        }
+
+        function escapeHTML(str) {
+
+            return str.replace(/[&<>'"]/g, 
+
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+
+            );
+
+        }
+</script>
+</body>
+</html>
+ 
